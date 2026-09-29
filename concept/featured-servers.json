@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "source": "https://erodednetworks.com/servers",
+  "retrievedDate": "2026-09-30",
+  "communities": [
+    {
+      "id": "en",
+      "name": "Eroded Networks"
+    },
+    {
+      "id": "cb",
+      "name": "CB / Stank Servers"
+    }
+  ],
+  "servers": [
+    {
+      "community": "en",
+      "label": "BO2 Plutonium Modded",
+      "game": "t6",
+      "mode": "zm",
+      "host": "103.152.197.155",
+      "port": 4976,
+      "region": "OCE",
+      "enabled": true
+    },
+    {
+      "community": "en",
+      "label": "BO2 Plutonium Official",
+      "game": "t6",
+      "mode": "zm",
+      "host": "103.152.197.155",
+      "port": 4977,
+      "region": "OCE",
+      "enabled": true
+    },
+    {
+      "community": "en",
+      "label": "BO2 Plutonium Official #2",
+      "game": "t6",
+      "mode": "zm",
+      "host": "103.152.197.155",
+      "port": 4978,
+      "region": "OCE",
+      "enabled": true
+    },
+    {
+      "community": "en",
+      "label": "BO2 Zombies Declassified",
+      "game": "t6",
+      "mode": "zm",
+      "host": "103.152.197.155",
+      "port": 4981,
+      "region": "OCE",
+      "enabled": true
+    },
+    {
+      "community": "en",
+      "label": "WAW Plutonium Official",
+      "game": "t4",
+      "mode": "zm",
+      "host": "103.152.197.155",
+      "port": 4777,
+      "region": "OCE",
+      "enabled": true
+    },
+    {
+      "community": "en",
+      "label": "WAW Plutonium Modded",
+      "game": "t4",
+      "mode": "zm",
+      "host": "103.152.197.155",
+      "port": 4778,
+      "region": "OCE",
+      "enabled": true
+    },
+    {
+      "community": "en",
+      "label": "BO3 Zombies Vanilla #1",
+      "game": "boiii",
+      "mode": "zm",
+      "host": "103.152.197.155",
+      "port": 27017,
+      "region": "OCE",
+      "enabled": true
+    },
+    {
+      "community": "en",
+      "label": "BO3 Zombies Vanilla #2",
+      "game": "boiii",
+      "mode": "zm",
+      "host": "103.152.197.155",
+      "port": 29018,
+      "region": "OCE",
+      "enabled": true
+    },
+    {
+      "community": "en",
+      "label": "BO3 Zombies Modded",
+      "game": "boiii",
+      "mode": "zm",
+      "host": "103.152.197.155",
+      "port": 29017,
+      "region": "OCE",
+      "enabled": true
+    },
+    {
+      "community": "en",
+      "label": "BO1 PLUTONIUM MODDED",
+      "game": "t5",
+      "mode": "zm",
+      "host": "103.152.197.155",
+      "port": 4877,
+      "region": "OCE",
+      "enabled": true
+    },
+    {
+      "community": "en",
+      "label": "BO1 PLUTONIUM Official",
+      "game": "t5",
+      "mode": "zm",
+      "host": "103.152.197.155",
+      "port": 4878,
+      "region": "OCE",
+      "enabled": true
+    },
+    {
+      "community": "en",
+      "label": "BO1 PLUTONIUM Official #2",
+      "game": "t5",
+      "mode": "zm",
+      "host": "103.152.197.155",
+      "port": 4879,
+      "region": "OCE",
+      "enabled": true
+    },
+    {
+      "community": "en",
+      "label": "BO2 FFA Bot Fill",
+      "game": "t6",
+      "mode": "mp",
+      "host": "103.152.197.155",
+      "port": 4980,
+      "region": "OCE",
+      "enabled": true
+    },
+    {
+      "community": "en",
+      "label": "[EU] BO2 Plutonium Official",
+      "game": "t6",
+      "mode": "zm",
+      "host": "159.195.205.193",
+      "port": 27015,
+      "region": "EU",
+      "enabled": true
+    },
+    {
+      "community": "en",
+      "label": "[EU] BO2 Plutonium Modded",
+      "game": "t6",
+      "mode": "zm",
+      "host": "159.195.205.193",
+      "port": 27016,
+      "region": "EU",
+      "enabled": true
+    },
+    {
+      "community": "en",
+      "label": "[EU] BO1 Plutonium Official",
+      "game": "t5",
+      "mode": "zm",
+      "host": "159.195.205.193",
+      "port": 27017,
+      "region": "EU",
+      "enabled": true
+    },
+    {
+      "community": "en",
+      "label": "[EU] BO1 Plutonium Modded",
+      "game": "t5",
+      "mode": "zm",
+      "host": "159.195.205.193",
+      "port": 27018,
+      "region": "EU",
+      "enabled": true
+    },
+    {
+      "community": "en",
+      "label": "[EU] WAW Plutonium Official",
+      "game": "t4",
+      "mode": "zm",
+      "host": "159.195.205.193",
+      "port": 27019,
+      "region": "EU",
+      "enabled": true
+    },
+    {
+      "community": "en",
+      "label": "[EU] WAW Plutonium Modded",
+      "game": "t4",
+      "mode": "zm",
+      "host": "159.195.205.193",
+      "port": 27020,
+      "region": "EU",
+      "enabled": true
+    }
+  ]
+}
