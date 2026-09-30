@@ -21,7 +21,8 @@
       "host": "103.152.197.155",
       "port": 4976,
       "region": "OCE",
-      "enabled": true
+      "enabled": true,
+      "allMaps": true
     },
     {
       "community": "en",
@@ -31,7 +32,8 @@
       "host": "103.152.197.155",
       "port": 4977,
       "region": "OCE",
-      "enabled": true
+      "enabled": true,
+      "allMaps": true
     },
     {
       "community": "en",
@@ -41,7 +43,8 @@
       "host": "103.152.197.155",
       "port": 4978,
       "region": "OCE",
-      "enabled": true
+      "enabled": true,
+      "allMaps": true
     },
     {
       "community": "en",
@@ -51,7 +54,8 @@
       "host": "103.152.197.155",
       "port": 4981,
       "region": "OCE",
-      "enabled": true
+      "enabled": true,
+      "allMaps": true
     },
     {
       "community": "en",
@@ -61,7 +65,8 @@
       "host": "103.152.197.155",
       "port": 4777,
       "region": "OCE",
-      "enabled": true
+      "enabled": true,
+      "allMaps": true
     },
     {
       "community": "en",
@@ -71,7 +76,8 @@
       "host": "103.152.197.155",
       "port": 4778,
       "region": "OCE",
-      "enabled": true
+      "enabled": true,
+      "allMaps": true
     },
     {
       "community": "en",
@@ -81,7 +87,8 @@
       "host": "103.152.197.155",
       "port": 27017,
       "region": "OCE",
-      "enabled": true
+      "enabled": true,
+      "allMaps": true
     },
     {
       "community": "en",
@@ -91,7 +98,8 @@
       "host": "103.152.197.155",
       "port": 29018,
       "region": "OCE",
-      "enabled": true
+      "enabled": true,
+      "allMaps": true
     },
     {
       "community": "en",
@@ -101,7 +109,8 @@
       "host": "103.152.197.155",
       "port": 29017,
       "region": "OCE",
-      "enabled": true
+      "enabled": true,
+      "allMaps": true
     },
     {
       "community": "en",
@@ -111,7 +120,8 @@
       "host": "103.152.197.155",
       "port": 4877,
       "region": "OCE",
-      "enabled": true
+      "enabled": true,
+      "allMaps": true
     },
     {
       "community": "en",
@@ -121,7 +131,8 @@
       "host": "103.152.197.155",
       "port": 4878,
       "region": "OCE",
-      "enabled": true
+      "enabled": true,
+      "allMaps": true
     },
     {
       "community": "en",
@@ -131,7 +142,8 @@
       "host": "103.152.197.155",
       "port": 4879,
       "region": "OCE",
-      "enabled": true
+      "enabled": true,
+      "allMaps": true
     },
     {
       "community": "en",
@@ -141,7 +153,8 @@
       "host": "103.152.197.155",
       "port": 4980,
       "region": "OCE",
-      "enabled": true
+      "enabled": true,
+      "allMaps": false
     },
     {
       "community": "en",
@@ -151,7 +164,8 @@
       "host": "159.195.205.193",
       "port": 27015,
       "region": "EU",
-      "enabled": true
+      "enabled": true,
+      "allMaps": true
     },
     {
       "community": "en",
@@ -161,7 +175,8 @@
       "host": "159.195.205.193",
       "port": 27016,
       "region": "EU",
-      "enabled": true
+      "enabled": true,
+      "allMaps": true
     },
     {
       "community": "en",
@@ -171,7 +186,8 @@
       "host": "159.195.205.193",
       "port": 27017,
       "region": "EU",
-      "enabled": true
+      "enabled": true,
+      "allMaps": true
     },
     {
       "community": "en",
@@ -181,7 +197,8 @@
       "host": "159.195.205.193",
       "port": 27018,
       "region": "EU",
-      "enabled": true
+      "enabled": true,
+      "allMaps": true
     },
     {
       "community": "en",
@@ -191,7 +208,8 @@
       "host": "159.195.205.193",
       "port": 27019,
       "region": "EU",
-      "enabled": true
+      "enabled": true,
+      "allMaps": true
     },
     {
       "community": "en",
@@ -201,6 +219,29 @@
       "host": "159.195.205.193",
       "port": 27020,
       "region": "EU",
+      "enabled": true,
+      "allMaps": true
+    },
+    {
+      "community": "cb",
+      "label": "Stank's Custom Gun Game",
+      "game": "t6",
+      "mode": "mp",
+      "host": "142.248.82.8",
+      "port": 4976,
+      "region": "NA",
+      "allMaps": false,
+      "enabled": true
+    },
+    {
+      "community": "cb",
+      "label": "Stank's Custom Gun Game",
+      "game": "boiii",
+      "mode": "mp",
+      "host": "142.248.82.8",
+      "port": 30120,
+      "region": "NA",
+      "allMaps": false,
       "enabled": true
     }
   ]

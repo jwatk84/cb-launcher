@@ -20,7 +20,7 @@ namespace commands::server_commands
     {
         constexpr size_t MAX_ADDRESSES = 512;
         constexpr size_t MAX_JOBS = 8;
-        constexpr size_t SEND_BATCH = 32;
+        constexpr size_t SEND_BATCH = 1;
         constexpr auto SWEEP_TIMEOUT = std::chrono::milliseconds(1200);
 
         // Quake-derived clients answer the out-of-band getinfo query; Plutonium

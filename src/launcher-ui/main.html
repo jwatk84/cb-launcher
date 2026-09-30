@@ -35,6 +35,7 @@
     <script src="./assets/js/popups/mod-detail-popup.js"></script>
     <script src="./assets/js/app/mods-view.js"></script>
     <script src="./assets/js/app/servers-view.js"></script>
+    <script src="./assets/js/app/featured-servers.js"></script>
     <script src="./assets/js/app/views.js"></script>
     <script src="./assets/js/app/main.js"></script>
 </head>
@@ -70,6 +71,10 @@
                     <div class="nav-item" id="library">
                         <div class="nav-icon library-icon"></div>
                         <span class="nav-label" data-i18n="nav.library">Library</span>
+                    </div>
+                    <div class="nav-item" id="servers" role="button" tabindex="0">
+                        <div class="nav-icon server-emoji" aria-hidden="true">🖥️</div>
+                        <span class="nav-label">Servers</span>
                     </div>
                     <div class="nav-item" id="downloads">
                         <div class="nav-icon downloads-icon"></div>
@@ -173,6 +178,7 @@
                     </section>
                 </div>
 
+                <div class="page-section" id="servers-page" style="display: none;"></div>
                 <div class="page-section" id="library-page" style="display: none;">
                     <div class="page-header">
                         <div class="page-title" data-i18n="library.title">Library</div>

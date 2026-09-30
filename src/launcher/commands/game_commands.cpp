@@ -514,7 +514,7 @@ namespace commands::game_commands
 
         // Launches a Plutonium mode via plutonium:// (or the bootstrapper directly in LAN mode), or nullopt when this mode isn't a Plutonium target.
         std::optional<bool> try_launch_plutonium(const game_config::game_config_t& config, const std::string& mode,
-            cef::cef_ui& cef_ui, const uint64_t generation)
+            cef::cef_ui& cef_ui, const uint64_t generation, const std::string& endpoint)
         {
             const auto name_it = config.plutonium_game_names.find(mode);
             if (name_it == config.plutonium_game_names.end())
@@ -530,6 +530,11 @@ namespace commands::game_commands
 
             if (!plutonium::is_available())
             {
+                if (!endpoint.empty())
+                {
+                    cef_ui.show_message_box("Server Join Error", "Install and sign in to Plutonium before joining this server.");
+                    return false;
+                }
                 return std::nullopt;
             }
 
@@ -559,7 +564,25 @@ namespace commands::game_commands
             const auto elevate = config.launch_elevated() && !utils::nt::is_elevated();
             plutonium::launch_result result;
 
-            if (plutonium_lan_enabled(config))
+            if (!endpoint.empty())
+            {
+                const auto install = config.get_install_path();
+                if (!install) return false;
+                if (plutonium::get_token().empty())
+                {
+                    recover("Sign in before joining an online server.");
+                    return false;
+                }
+                // The installed Plutonium launcher drops URI params. The page provides
+                // its supported console connect command; use CB's authenticated launch.
+                result = plutonium::launch_via_uri(name_it->second, elevate);
+                if (!result.success)
+                {
+                    if (!result.cancelled) recover("Could not start the selected server's game.");
+                    return false;
+                }
+            }
+            else if (plutonium_lan_enabled(config))
             {
                 const auto install = config.get_install_path();
                 if (!install)
@@ -627,7 +650,7 @@ namespace commands::game_commands
         }
 
         // Assumes the caller already holds the launch barrier and reserved `generation`.
-        bool launch_game(const game_config::game_config_t& config, const std::string& game, const std::string& mode, cef::cef_ui& cef_ui, const uint64_t generation)
+        bool launch_game(const game_config::game_config_t& config, const std::string& game, const std::string& mode, cef::cef_ui& cef_ui, const uint64_t generation, const std::string& endpoint)
         {
             if (config.mode_arguments.size() > 0 && !mode.empty())
             {
@@ -672,7 +695,7 @@ namespace commands::game_commands
                 }
             }
 
-            if (const auto handled = try_launch_plutonium(config, mode, cef_ui, generation))
+            if (const auto handled = try_launch_plutonium(config, mode, cef_ui, generation, endpoint))
             {
                 return *handled;
             }
@@ -746,7 +769,7 @@ namespace commands::game_commands
 
         // Update-then-launch sequence; assumes the caller holds the barrier and reserved `generation`.
         void run_launch_worker(game_config::game_config_t config, std::string game, std::string mode,
-            cef::cef_ui& cef_ui, command_context& ctx, const uint64_t generation)
+            cef::cef_ui& cef_ui, command_context& ctx, const uint64_t generation, const std::string& endpoint = {})
         {
             updater::ui_progress_listener progress_listener;
             progress_listener.reset(true);
@@ -790,7 +813,7 @@ namespace commands::game_commands
                 }
                 progress_listener.done_update();
 
-                launched = launch_game(config, game, mode, cef_ui, generation);
+                launched = launch_game(config, game, mode, cef_ui, generation, endpoint);
             }
             catch (const updater::update_cancelled&)
             {
@@ -805,7 +828,7 @@ namespace commands::game_commands
                 printf("Launch error: %s\n", e.what());
                 cef_ui.show_message_box("Game Launch Error", e.what());
 
-                launched = launch_game(config, game, mode, cef_ui, generation); //Attempt to launch game even if error in update
+                launched = launch_game(config, game, mode, cef_ui, generation, endpoint); //Attempt to launch game even if error in update
             }
             catch (...)
             {
@@ -814,7 +837,7 @@ namespace commands::game_commands
                 printf("Unknown launch error\n");
                 cef_ui.show_message_box("Game Launch Error", "An unknown error occurred during game launch");
 
-                launched = launch_game(config, game, mode, cef_ui, generation); //Attempt to launch game even if error in update
+                launched = launch_game(config, game, mode, cef_ui, generation, endpoint); //Attempt to launch game even if error in update
             }
 
             // Release the barrier unless a game process is now running (the exit watchdog or stop-game owns it).
@@ -1055,6 +1078,35 @@ namespace commands::game_commands
             // Get mode if provided, otherwise empty string
             const auto mode = value.HasMember("mode") ? std::string{ value["mode"].GetString() } : std::string{};
 
+            std::string endpoint;
+            if (value.HasMember("server"))
+            {
+                if (!value["server"].IsString()) return;
+                endpoint = value["server"].GetString();
+                const auto separator = endpoint.rfind(':');
+                int port = 0;
+                const auto host = separator == std::string::npos ? std::string{} : endpoint.substr(0, separator);
+                const auto port_text = separator == std::string::npos ? std::string{} : endpoint.substr(separator + 1);
+                const auto parsed = std::from_chars(port_text.data(), port_text.data() + port_text.size(), port);
+                if (host.empty() || host.find_first_not_of("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789.-") != std::string::npos
+                    || parsed.ec != std::errc{} || parsed.ptr != port_text.data() + port_text.size() || port < 1 || port > 65535
+                    || (mode != "mp" && mode != "zm"))
+                {
+                    cef_ui.show_message_box("Server Join Error", "Invalid server address or game mode.");
+                    return;
+                }
+                if (config->id == "boiii")
+                {
+                    ipc::ipc_server::instance().join_direct(config->id, host, port, mode);
+                    return;
+                }
+                if (!config->plutonium_game_names.contains(mode))
+                {
+                    cef_ui.show_message_box("Server Join Error", "Direct server launch is not available for this client.");
+                    return;
+                }
+            }
+
             if (!try_lock_launch_barrier())
             {
                 const auto running_id = tracked_game_id();
@@ -1085,9 +1137,9 @@ namespace commands::game_commands
 
             // Run update and launch in a separate thread with progress tracking
             const auto generation = reserve_launch_generation();
-            std::thread([config = *config, mode, game, &cef_ui, &ctx, generation]()
+            std::thread([config = *config, mode, game, &cef_ui, &ctx, generation, endpoint]()
             {
-                run_launch_worker(config, game, mode, cef_ui, ctx, generation);
+                run_launch_worker(config, game, mode, cef_ui, ctx, generation, endpoint);
             }).detach();
         });
 

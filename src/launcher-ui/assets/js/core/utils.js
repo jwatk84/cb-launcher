@@ -1015,7 +1015,7 @@ class GameUtils {
      * @param {string|null} mode - Game mode (sp, mp, zm, sv) or null for default
      * @returns {Promise} Promise that resolves when launch completes
      */
-    static async launchGameWithMode(backendGame, uiGameId, mode = null) {
+    static async launchGameWithMode(backendGame, uiGameId, mode = null, server = null) {
         const gameConfig = this.getGameConfig(backendGame);
         if (!gameConfig) {
             console.error(`No configuration found for game: ${backendGame}`);
@@ -1125,6 +1125,7 @@ class GameUtils {
 
         // Build command arguments
         const commandArgs = { game: backendGame };
+        if (server) commandArgs.server = server;
         if (mode) {
             commandArgs.mode = mode;
         }

@@ -424,6 +424,14 @@ body.offline-mode #friends {
     mask-size: 22px;
 }
 
+.nav-icon.server-emoji {
+    background: none;
+    font-family: "Segoe UI Emoji", sans-serif;
+    font-size: 21px;
+    line-height: 22px;
+    text-align: center;
+}
+
 .nav-icon.home-icon {
     -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l9-7 9 7v9a2 2 0 01-2 2h-4v-6h-6v6H5a2 2 0 01-2-2v-9z"/></svg>');
     mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="white" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M3 11l9-7 9 7v9a2 2 0 01-2 2h-4v-6h-6v6H5a2 2 0 01-2-2v-9z"/></svg>');
@@ -8351,3 +8359,41 @@ html:not([data-color-uninstalled]) .library-card:not(.is-installed):not(.is-comi
     color: var(--accent);
     font-size: 12px;
 }
+/* EN / CB featured server concept */
+.featured-build-tag { font: 500 11px 'IBM Plex Mono', monospace; color: #ffa51b; vertical-align: middle; margin-left: 16px; }
+.featured-communities { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin: 24px 0 30px; }
+.featured-community { min-height: 215px; padding: 26px 30px; text-align: left; border: 1px solid #705020; color: #e7e7df; background: #111; cursor: pointer; position: relative; overflow: hidden; clip-path: polygon(0 0, 97% 0, 100% 8%, 100% 100%, 3% 100%, 0 92%); }
+.featured-en { background: linear-gradient(90deg,rgba(9,12,10,.96),rgba(9,12,10,.6)), url('../img/games/t6/hero.jpg') center/cover; }
+.featured-cb { background: linear-gradient(90deg,rgba(9,12,10,.96),rgba(9,12,10,.6)), url('../img/games/boiii/hero.jpg') center/cover; }
+.featured-community:hover { border-color: #ffa51b; }
+.featured-community-content { display: block; padding: 0; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; width: 100%; }
+.featured-discord { display: inline-block; margin-top: 15px; padding: 8px 16px; background: #252923; color: #ffb13c; border: 1px solid #866126; font: 700 15px 'Rajdhani', sans-serif; cursor: pointer; }
+.featured-discord:hover { background: #353a30; }
+.featured-community:focus-visible, .featured-server-name:focus-visible, .featured-join:focus-visible { outline: 2px solid #ffa51b; outline-offset: 3px; }
+.featured-community strong { display: block; font: 700 44px/1 'Rajdhani', sans-serif; letter-spacing: 1px; margin: 15px 0; }
+.featured-community em { color: #ffa51b; font-style: normal; }
+.featured-community span, .featured-community small { display: block; }
+.featured-community small { margin-top: 9px; color: #a3a38d; }
+.featured-kicker { font: 500 10px 'IBM Plex Mono', monospace; letter-spacing: 2px; color: #aaa; }
+.featured-list-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.featured-list-heading h2 { font: 700 24px 'Rajdhani', sans-serif; text-transform: uppercase; margin: 0; }
+#featured-updated { color: #969680; font-size: 12px; }
+.featured-toolbar { display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
+.featured-toolbar input, .featured-toolbar select { min-height: 40px; padding: 9px 13px; background: #131612; color: #ddd; border: 1px solid #383a31; border-radius: 3px; }
+.featured-toolbar input { flex: 1; min-width: 180px; }
+#featured-notice { color: #c6aa78; font-size: 13px; margin: 10px 0; }
+.featured-row { display: grid; grid-template-columns: 72px 35px minmax(150px,1.4fr) minmax(130px,1fr) minmax(120px,.8fr) 35px 75px 140px; align-items: center; gap: 13px; min-height: 77px; padding: 9px; margin-bottom: 8px; border: 1px solid #2b2d27; border-radius: 3px; background: linear-gradient(100deg,#171a15,#0e100e); }
+.featured-game-art { width: 72px; height: 57px; object-fit: cover; border-radius: 2px; }
+.featured-badge { border: 1px solid #bb7c21; color: #ffa51b; text-align: center; padding: 5px 0; font: 700 18px 'Rajdhani', sans-serif; }
+.featured-badge.is-en { border-color: #77796a; color: #ededde; }
+.featured-server-name { background: none; color: #eee; border: 0; text-align: left; padding: 0; cursor: pointer; min-width: 0; }
+.featured-server-name strong { display: block; font: 600 16px 'Rajdhani', sans-serif; overflow-wrap: anywhere; }
+.featured-row small { display: block; font-size: 11px; color: #9c9e8c; margin-top: 4px; overflow-wrap: anywhere; }
+.featured-game-label strong, .featured-map strong, .featured-players strong { font: 600 14px 'Rajdhani', sans-serif; }
+.featured-region-label { color: #aeae99; font-size: 12px; }
+.featured-join { min-height: 38px; border: 1px solid #e0931b; background: #ff9d16; color: #171307; text-transform: uppercase; font: 700 14px 'Rajdhani', sans-serif; cursor: pointer; clip-path: polygon(0 0,94% 0,100% 20%,100% 100%,6% 100%,0 80%); }
+.featured-join:hover { background: #ffb844; }
+.featured-join:disabled { opacity: .5; cursor: default; }
+.featured-footnote { color: #8b8f7a; font-size: 12px; margin-top: 20px; line-height: 1.6; }
+@media(max-width:1250px) { .featured-row { grid-template-columns: 48px 30px minmax(120px,1.4fr) minmax(100px,1fr) minmax(85px,.8fr) 30px 60px 105px; gap: 8px; } .featured-game-art { width: 48px; } .featured-community strong { font-size: 36px; } }
+@media(max-width:950px) { .featured-communities { gap: 10px; } .featured-community { padding: 20px; min-height: 185px; } .featured-row { grid-template-columns: 30px minmax(120px,1fr) minmax(100px,1fr) 105px; } .featured-game-art { display: none; } .featured-map { grid-column: 2; } .featured-region-label { grid-column: 1; grid-row: 2; } .featured-players { grid-column: 3; } .featured-join { grid-column: 4; grid-row: 1 / span 2; } }

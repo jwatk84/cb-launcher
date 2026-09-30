@@ -435,7 +435,7 @@ int CALLBACK WinMain(const HINSTANCE instance, HINSTANCE, LPSTR, int)
             }
         }
 
-        if (!utils::nt::is_wine_environment())
+        if (!utils::nt::is_wine_environment() && !utils::flags::has_flag("en-cb-concept"))
         {
             create_shortcuts();
             uri_scheme::ensure_registered();

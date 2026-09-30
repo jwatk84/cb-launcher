@@ -140,25 +140,25 @@
         return servers;
     }
 
-    async function getServers(game) {
+    async function getServers(game, requireLive = false, probe = true) {
         if (!supports(game)) return [];
 
-        if (PREVIEW_MODE && !window.__serversMock.api) {
+        if (PREVIEW_MODE && !requireLive && !window.__serversMock.api) {
             return mockServers(game);
         }
 
         const path = `/v1/servers?game=${game}`;
         const api = window.__serversMock.api;
         const res = api
-            ? await fetch(`${api}${path}`, { cache: 'no-store' })
-            : await ServiceHosts.request('servers', path, { cache: 'no-store' });
+            ? await fetch(`${api}${path}`, { cache: 'no-store', signal: AbortSignal.timeout(15000) })
+            : await ServiceHosts.request('servers', path, { cache: 'no-store', signal: AbortSignal.timeout(15000) });
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         const data = await res.json();
         const servers = Array.isArray(data.servers) ? data.servers : [];
 
         // A failed probe just leaves pings null; the list is still useful.
         try {
-            const pings = await pingServers(servers.map(server => server.id));
+            const pings = probe ? await pingServers(servers.map(server => server.id)) : {};
             servers.forEach(server => {
                 const ping = pings[server.id];
                 server.ping = typeof ping === 'number' ? Math.round(ping) : null;
@@ -249,6 +249,7 @@
         REGIONS,
         supports,
         getServers,
+        pingServers,
         joinServer,
         connectCommand,
         getFavorites,

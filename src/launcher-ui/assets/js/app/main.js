@@ -550,6 +550,16 @@ async function initializeNavigation() {
     // Handle library navigation
     const libraryElement = document.querySelector("#library");
     libraryElement.addEventListener("click", handleLibraryClick);
+    const serversElement = document.getElementById('servers');
+    const openServers = () => {
+        removeActiveNavigation();
+        serversElement.classList.add('active');
+        loadNavigationPage('servers');
+    };
+    serversElement.addEventListener('click', openServers);
+    serversElement.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openServers(); }
+    });
 
     // Handle downloads navigation
     const downloadsElement = document.querySelector("#downloads");
@@ -1498,6 +1508,7 @@ function loadNavigationPage(page) {
     // The community board only polls while its tab is open.
     if (window.CommunityManager) window.CommunityManager.setActive(page === 'community');
     if (window.ModerationManager) window.ModerationManager.setActive(page === 'moderation');
+    if (window.FeaturedServers) window.FeaturedServers.setActive(page === 'servers');
 
     // Initialize page-specific functionality
     if (page === 'settings') {

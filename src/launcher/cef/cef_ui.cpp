@@ -1,4 +1,5 @@
 #include <std_include.hpp>
+#include <utils/flags.hpp>
 
 #include "cef/cef_ui.hpp"
 #include "cef/cef_ui_app.hpp"
@@ -161,6 +162,7 @@ namespace cef
 
         CefSettings settings;
         settings.no_sandbox = TRUE;
+        if (utils::flags::has_flag("en-cb-concept")) settings.remote_debugging_port = 12346;
         //settings.single_process = TRUE;
         //settings.windowless_rendering_enabled = TRUE;
         //settings.pack_loading_disabled = FALSE;
@@ -172,7 +174,7 @@ namespace cef
 #ifdef DEBUG
         settings.log_severity = LOGSEVERITY_VERBOSE;
 #else
-        settings.log_severity = LOGSEVERITY_DISABLE;
+        settings.log_severity = utils::flags::has_flag("en-cb-concept") ? LOGSEVERITY_INFO : LOGSEVERITY_DISABLE;
 #endif
 
         CefString(&settings.browser_subprocess_path) = this->process_.get_path();

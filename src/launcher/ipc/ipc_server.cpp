@@ -1367,12 +1367,12 @@ namespace ipc
         this->impl_->handle_join_secret(secret);
     }
 
-    void ipc_server::join_direct(const std::string& game_id, const std::string& ip, const int port)
+    void ipc_server::join_direct(const std::string& game_id, const std::string& ip, const int port, const std::string& mode)
     {
         join_secret::transport t{};
         t.ip = ip;
         t.port = port;
-        this->impl_->dispatch_join(game_id, {}, t);
+        this->impl_->dispatch_join(game_id, mode, t);
     }
 
     void ipc_server::clear_pending_join()

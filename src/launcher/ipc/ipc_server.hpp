@@ -33,7 +33,7 @@ namespace ipc
         void handle_join_secret(const std::string& secret);
 
         // Server-browser join: same routing as a join secret, from a bare address.
-        void join_direct(const std::string& game_id, const std::string& ip, int port);
+        void join_direct(const std::string& game_id, const std::string& ip, int port, const std::string& mode = {});
 
         // Drop any join queued for a not-yet-connected fork so a stale connect can't fire on a later hello.
         void clear_pending_join();
