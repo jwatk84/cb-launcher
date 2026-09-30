@@ -573,8 +573,7 @@ namespace commands::game_commands
                     recover("Sign in before joining an online server.");
                     return false;
                 }
-                // The installed Plutonium launcher drops URI params. The page provides
-                // its supported console connect command; use CB's authenticated launch.
+                // Keep the normal session-creating launcher handoff; connect after boot.
                 result = plutonium::launch_via_uri(name_it->second, elevate);
                 if (!result.success)
                 {
@@ -636,6 +635,11 @@ namespace commands::game_commands
             // Track the bootstrapper, not the launcher we spawned - that one exits after the handoff.
             // An elevated launcher hands its integrity level down, so stopping the game needs the elevated path too.
             set_tracked_launch(result.bootstrapper_pid, config.id, generation, result.elevated);
+
+            if (!endpoint.empty() && !plutonium::connect_after_boot(result.bootstrapper_pid, endpoint))
+            {
+                cef_ui.show_message_box("Server Join Error", "The game launched, but its console was not ready for automatic connection. In the game console, enter: connect " + endpoint);
+            }
 
             const auto close_on_launch = utils::properties::load(property_keys::CLOSE_ON_LAUNCH);
             if (close_on_launch && *close_on_launch == "true")

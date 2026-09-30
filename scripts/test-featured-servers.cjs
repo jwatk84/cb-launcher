@@ -88,11 +88,12 @@ test('missing installation opens setup without launching', async () => {
     assert.deepEqual(p.calls.filter(c => c[0] !== 'ping'), [['setup', 't6']]);
 });
 
-test('Plutonium copies a supported connect command and respects cancellation', async () => {
-    const p = await page({ cancel: true });
+test('Plutonium join launches directly without clipboard or confirmation fallback', async () => {
+    const p = await page();
     await p.click(0);
-    assert.deepEqual(p.calls.filter(c => c[0] === 'copy'), [['copy', 'connect 203.0.113.1:4976']]);
-    assert.ok(!p.calls.some(c => c[0] === 'launch'));
+    assert.ok(!p.calls.some(c => c[0] === 'copy'));
+    assert.ok(p.calls.some(c => c[0] === 'launch'));
+    assert.ok(!p.get('servers-page').innerHTML.includes('Launch & Copy'));
 });
 
 test('failed live queries retain addresses with unknown counts', async () => {

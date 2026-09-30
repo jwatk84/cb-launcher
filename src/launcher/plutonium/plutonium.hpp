@@ -40,6 +40,10 @@ namespace plutonium
     // `elevate` forces the UAC path up front; a 740 from their exe elevates on its own regardless.
     launch_result launch_via_uri(const std::string& pluto_game, bool elevate = false);
 
+    // Wait for startup to settle, then submit one connect command to the game's console.
+    // No game memory access or authentication changes. Returns false if its console is unavailable.
+    bool connect_after_boot(unsigned long bootstrapper_pid, const std::string& endpoint);
+
     // Spawns the bootstrapper directly: <game> "<game_path>" -lan [-name <name>]. No token, no session call, no launcher UI.
     launch_result launch_lan(const std::string& pluto_game, const std::filesystem::path& game_path,
         const std::string& player_name, bool elevate = false);

@@ -10,6 +10,7 @@
 #include <utils/string.hpp>
 
 #include <chrono>
+#include <mutex>
 #include <thread>
 
 namespace plutonium
@@ -396,6 +397,93 @@ namespace plutonium
         utils::logger::write("[pluto] timed out waiting for '{}'", pluto_game);
         kill_process(pid, handle);
         return {false, 0, elevated, false};
+    }
+
+    bool connect_after_boot(const unsigned long bootstrapper_pid, const std::string& endpoint)
+    {
+        static std::mutex console_mutex;
+        std::lock_guard lock{console_mutex};
+        // GUI Release builds have no console; do not detach an existing debug console.
+        if (GetConsoleWindow()) return false;
+        const auto process = OpenProcess(SYNCHRONIZE | PROCESS_QUERY_LIMITED_INFORMATION, FALSE, bootstrapper_pid);
+        if (!process) return false;
+        const auto cleanup_process = utils::finally([&] { CloseHandle(process); });
+        const auto started = std::chrono::steady_clock::now();
+        const auto deadline = started + std::chrono::seconds(90);
+        bool attached = false;
+        HANDLE input = INVALID_HANDLE_VALUE;
+        HANDLE output = INVALID_HANDLE_VALUE;
+        const auto cleanup_console = utils::finally([&]
+        {
+            if (input != INVALID_HANDLE_VALUE) CloseHandle(input);
+            if (output != INVALID_HANDLE_VALUE) CloseHandle(output);
+            if (attached) FreeConsole();
+        });
+        std::wstring previous;
+        auto last_change = started;
+        while (std::chrono::steady_clock::now() < deadline && WaitForSingleObject(process, 0) == WAIT_TIMEOUT)
+        {
+            if (!attached && AttachConsole(bootstrapper_pid))
+            {
+                attached = true;
+                input = CreateFileW(L"CONIN$", GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, 0, nullptr);
+                output = CreateFileW(L"CONOUT$", GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, nullptr, OPEN_EXISTING, 0, nullptr);
+                if (input == INVALID_HANDLE_VALUE || output == INVALID_HANDLE_VALUE) return false;
+            }
+            if (attached)
+            {
+                CONSOLE_SCREEN_BUFFER_INFO info{};
+                if (!GetConsoleScreenBufferInfo(output, &info)) return false;
+                const auto first_line = std::max<int>(0, info.dwCursorPosition.Y - 8);
+                const auto count = static_cast<DWORD>((info.dwCursorPosition.Y - first_line + 1) * info.dwSize.X);
+                std::wstring tail(count, L'\0');
+                DWORD read = 0;
+                if (!ReadConsoleOutputCharacterW(output, tail.data(), count, {0, static_cast<SHORT>(first_line)}, &read)) return false;
+                tail.resize(read);
+                const auto now = std::chrono::steady_clock::now();
+                if (tail != previous) { previous = std::move(tail); last_change = now; }
+                // Loading can pause briefly. Require both a game window and a minimum boot grace.
+                window_search game_window{bootstrapper_pid, nullptr};
+                EnumWindows([](HWND window, LPARAM parameter) -> BOOL
+                {
+                    auto& search = *reinterpret_cast<window_search*>(parameter);
+                    DWORD pid = 0;
+                    GetWindowThreadProcessId(window, &pid);
+                    wchar_t title[256]{};
+                    GetWindowTextW(window, title, static_cast<int>(std::size(title)));
+                    if (pid == search.pid && IsWindowVisible(window) && std::wstring_view{title}.starts_with(L"Plutonium T"))
+                    { search.found = window; return FALSE; }
+                    return TRUE;
+                }, reinterpret_cast<LPARAM>(&game_window));
+                if (game_window.found && now - started >= std::chrono::seconds(12) && now - last_change >= std::chrono::seconds(3))
+                {
+                    DWORD pending = 0;
+                    if (!GetNumberOfConsoleInputEvents(input, &pending) || pending != 0) return false;
+                    const auto command = "connect " + endpoint;
+                    std::vector<INPUT_RECORD> events;
+                    for (const auto character : command + "\r")
+                    {
+                        INPUT_RECORD event{};
+                        event.EventType = KEY_EVENT;
+                        event.Event.KeyEvent.bKeyDown = TRUE;
+                        event.Event.KeyEvent.wRepeatCount = 1;
+                        event.Event.KeyEvent.uChar.UnicodeChar = static_cast<wchar_t>(character);
+                        event.Event.KeyEvent.wVirtualKeyCode = character == '\r' ? VK_RETURN : 0;
+                        events.push_back(event);
+                        event.Event.KeyEvent.bKeyDown = FALSE;
+                        events.push_back(event);
+                    }
+                    DWORD written = 0;
+                    const auto submitted = WriteConsoleInputW(input, events.data(), static_cast<DWORD>(events.size()), &written)
+                        && written == events.size();
+                    utils::logger::write("[pluto] post-boot connect {} for pid {} to {}", submitted ? "submitted" : "failed", bootstrapper_pid, endpoint);
+                    return submitted;
+                }
+            }
+            std::this_thread::sleep_for(std::chrono::milliseconds(250));
+        }
+        utils::logger::write("[pluto] post-boot connect timed out for pid {}", bootstrapper_pid);
+        return false;
     }
 
     launch_result launch_lan(const std::string& pluto_game, const std::filesystem::path& game_path,

@@ -29,7 +29,7 @@
     function shell() {
         host().innerHTML = `
             <div class="page-header"><div class="page-title">Servers <span class="featured-build-tag">EN / CB CONCEPT</span></div>
-            <div class="page-subtitle">Find your next game. Join BOIII directly or launch Plutonium with a copied connect command.</div></div>
+            <div class="page-subtitle">Find your next game. Launch and connect after the game boots.</div></div>
             <div class="featured-communities">
                 <div class="featured-community featured-en"><button class="featured-community-content" data-community="en"><span class="featured-kicker">FEATURED COMMUNITY</span><strong>ERODED<br><em>NETWORKS</em></strong><span id="featured-en-regions">Zombies & Multiplayer</span><small>All zombie maps · Official & Modded</small></button><button class="featured-discord" id="featured-en-discord">Join Discord ↗</button></div>
                 <div class="featured-community featured-cb"><button class="featured-community-content" data-community="cb"><span class="featured-kicker">FEATURED COMMUNITY</span><strong>CB / STANK<br><em>SERVERS</em></strong><span>Community multiplayer servers</span><small>Black Ops 2 & Black Ops 3</small></button><button class="featured-discord" id="featured-cb-discord">Join Discord ↗</button></div>
@@ -85,7 +85,7 @@
                 <div class="featured-map"><strong>${maps}</strong><small>Now: ${esc(live && live.map || 'Unknown')}</small></div>
                 <div class="featured-region-label">${esc(row.region === 'OCE' ? 'AU' : row.region || '—')}</div>
                 <div class="featured-players"><strong>${live ? `${Number(live.players) || 0} / ${Number(live.maxPlayers) || 0}` : '—'}</strong><small>${live ? (typeof live.ping === 'number' ? `${live.ping} ms` : 'Listed live') : 'Not listed'}</small></div>
-                <button class="featured-join" data-join="${index}" ${joining || locked || full ? 'disabled' : ''}>${locked ? 'Password required' : full ? 'Server full' : row.game === 'boiii' ? 'Launch & Join' : 'Launch & Copy'}</button>
+                <button class="featured-join" data-join="${index}" ${joining || locked || full ? 'disabled' : ''}>${locked ? 'Password required' : full ? 'Server full' : 'Launch & Join'}</button>
             </div>`;
         }).join('') : `<div class="mods-empty">${loading ? 'Loading featured servers…' : 'No servers match these filters.'}</div>`;
         document.getElementById('featured-updated').textContent = loading ? 'Refreshing…' : `${visible.length} servers · ${lastRefresh}`;
@@ -163,13 +163,6 @@
             const backend = GameUtils.getGameMapping(row.game);
             const install = await window.executeCommand('get-game-property', { game: backend, suffix: 'install' });
             if (!install) { showManageInstall(row.game); return; }
-            if (row.game !== 'boiii') {
-                const command = `connect ${row.host}:${row.port}`;
-                const copied = await window.copyTextToClipboard(command);
-                const choice = await window.showMessageBox(gameName(row.game) + ' · Plutonium',
-                    `Plutonium launches this game through its own launcher. This version does not pass a server address to the game.\n\n${copied ? 'Copied: ' : 'Use: '}${command}\n\nOnce the game opens, open its console with ~ and paste this command to join.`, ['Launch game', 'Cancel']);
-                if (choice !== 0) return;
-            }
             addRecentGame(row.game);
             await GameUtils.launchGameWithMode(backend, row.game, row.mode, `${row.host}:${row.port}`);
         } catch (error) {
