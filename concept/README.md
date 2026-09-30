@@ -16,7 +16,7 @@ Rust is outside CB's supported game list. Ghosts Extinction is not included in t
 
 Build the Release x64 solution using the repository's usual instructions, then run `scripts/package-en-cb.ps1`. A runnable package requires `cb-launcher.exe`, the UI under `cbservers/data/launcher-ui`, CEF runtime files under `cbservers/data/cef/Release`, Discord SDK runtime files under `cbservers/data/discord`, and CB's game manifests under `cbservers/manifest`. Omitting the manifests while disabling self-update causes installation-check errors at startup.
 
-Start with `cb-launcher.exe -portable -noupdate -en-cb-concept`. The concept flag avoids registering Windows shortcuts and the default launcher URI handler. It enables a local Chromium debugging port (12346) for development. Portable settings stay beside this executable; the test package only copies existing game installation paths, not launcher accounts.
+Start with `cb-launcher.exe -portable -noupdate -en-cb-concept`. The concept flag avoids registering Windows shortcuts and the default launcher URI handler. Portable settings stay beside this executable; the test package only copies existing game installation paths, not launcher accounts.
 
 BOIII joins use CB's existing IPC transport with the selected server's mode. Plutonium uses CB's existing authenticated `plutonium://play/<game>` launch through Plutonium's own launcher. Never pass the saved login token directly to the bootstrapper: it needs a newly created game session and otherwise reports HTTP 401.
 
@@ -24,4 +24,4 @@ Plutonium r5354's native launcher discards additional URI connection parameters.
 
 Buttons are **Launch & Join**. If the console handoff fails, the launcher reports that the game launched but auto-connect failed, with the manual command. Missing installations open setup. Password-protected and full servers have disabled launch buttons. Joining a running Plutonium game requires closing that game first. Debug builds with their own attached console do not use this handoff; elevated games may also deny console access.
 
-Validation: Release x64 build, eight focused page/routing tests (`node --test scripts/test-featured-servers.cjs`), startup without missing-manifest dialogs, live EN/CB counts, and authenticated BO2 Zombies auto-connect to `103.152.197.155:4977`. The native log recorded the post-boot command; BO2 logged connection and loaded Buried. The user confirmed reaching the server automatically on 2026-09-30. BO1 and WaW use the same console handoff but still need their own in-game verification.
+Validation: Release x64 build, eight focused page/routing tests (`node --test scripts/test-featured-servers.cjs`), startup without missing-manifest dialogs, live EN/CB counts, and authenticated BO2 Zombies auto-connect to `103.152.197.155:4977`. In-game verification on 2026-09-30 confirmed automatic connection and loading Buried. BO1 and WaW use the same console handoff but still need their own in-game verification.

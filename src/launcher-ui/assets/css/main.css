@@ -8360,7 +8360,6 @@ html:not([data-color-uninstalled]) .library-card:not(.is-installed):not(.is-comi
     font-size: 12px;
 }
 /* EN / CB featured server concept */
-.featured-build-tag { font: 500 11px 'IBM Plex Mono', monospace; color: #ffa51b; vertical-align: middle; margin-left: 16px; }
 .featured-communities { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin: 24px 0 30px; }
 .featured-community { min-height: 215px; padding: 26px 30px; text-align: left; border: 1px solid #705020; color: #e7e7df; background: #111; cursor: pointer; position: relative; overflow: hidden; clip-path: polygon(0 0, 97% 0, 100% 8%, 100% 100%, 3% 100%, 0 92%); }
 .featured-en { background: linear-gradient(90deg,rgba(9,12,10,.96),rgba(9,12,10,.6)), url('../img/games/t6/hero.jpg') center/cover; }

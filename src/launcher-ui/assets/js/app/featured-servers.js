@@ -28,7 +28,7 @@
 
     function shell() {
         host().innerHTML = `
-            <div class="page-header"><div class="page-title">Servers <span class="featured-build-tag">EN / CB CONCEPT</span></div>
+            <div class="page-header"><div class="page-title">Servers</div>
             <div class="page-subtitle">Find your next game. Launch and connect after the game boots.</div></div>
             <div class="featured-communities">
                 <div class="featured-community featured-en"><button class="featured-community-content" data-community="en"><span class="featured-kicker">FEATURED COMMUNITY</span><strong>ERODED<br><em>NETWORKS</em></strong><span id="featured-en-regions">Zombies & Multiplayer</span><small>All zombie maps · Official & Modded</small></button><button class="featured-discord" id="featured-en-discord">Join Discord ↗</button></div>
